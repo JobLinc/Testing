@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "joblinc-testing"
+version = "0.1.0"
+description = "End-to-end testing scripts for the web and mobile applications for JobLinc."
+authors = ["MoAlkhateeb <mo.hany.alkhateeb@gmail.com>", "retajjjj <retagmohamed2004@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+appium-python-client = "^4.5.1"
+pytest = "^8.3.5"
+pytest-playwright = "^0.7.0"
+python-dotenv = "^1.0.1"
+loguru = "^0.7.3"
+pytest-html = "^4.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pre-commit = "^4.1.0"
+mypy = "^1.15.0"
+
+[tool.black]
+line-length = 80
+target-version = ['py313']
+include = '\.pyi?$'
+exclude =  '''
+(
+    \.git
+  | \.venv
+  | build
+  | dist
+  | __pycache__
+  | .*_cache
+)/
+'''
+
+
+[tool.mypy]
+strict = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
