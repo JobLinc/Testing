@@ -35,13 +35,16 @@ class PostPage(BasePage):
         self.follow_button = page.get_by_text("Follow").first
         # self.follow_button = page.locator("p.text-red-600.font-medium:text-is('Follow')")
 
+        self.post_section = page.locator(
+            "div.flex.flex-wrap.w-1\\/1.bg-lightGray.rounded-xl.relative"
+        )
         self.content_section = page.locator("div.min-w-0.mr-3.ml-3").nth(0)
-        self.paragraph = self.content_section.locator("p")
+        self.paragraph = self.content_section.locator("p").nth(0)
 
         self.options_button = page.get_by_test_id("Options 0")
 
         self.edit_option = page.get_by_role("button", name="Edit").first
-        self.post_text = page.get_by_text("Lorem ipsum dolor sit amet,")
+        self.post_text = page.get_by_text("Lorem ipsum dolor sit amet,").nth(0)
         self.submit_edit = page.get_by_role("button", name="Submit")
 
         self.delete_option = page.get_by_test_id("Delete 0")

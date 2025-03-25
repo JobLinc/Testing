@@ -1,7 +1,6 @@
 from playwright.sync_api import Page
 from .base_page import BasePage
 from ..pages.login_page import LoginPage
-from ..config import SIGNIN_EMAIL, SIGNIN_PASSWORD, CHANGE_PASSWORD
 
 
 class ChangePasswordPage(BasePage):

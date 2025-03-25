@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import string
 import random
+import pytest
 
 load_dotenv()
 
@@ -9,9 +10,39 @@ BASE_URL = os.getenv("WEB_BASE_URL", "https://joblinc.me")
 EMAIL = os.getenv("EMAIL", "email")
 PASSWORD = os.getenv("PASSWORD", "password")
 
-SIGNIN_EMAIL = os.getenv("SIGNIN_EMAIL", "first-testing@gmail.com")
-SIGNIN_PASSWORD = os.getenv("SIGNIN_PASSWORD", "first-testing-change")
-CHANGE_PASSWORD = os.getenv("CHANGE_PASSWORD", "first-testing-change1")
+SIGNIN_EMAIL_CHROME = os.getenv(
+    "SIGNIN_EMAIL_CHROME", "testing-chrome@gmail.com"
+)
+SIGNIN_PASSWORD_CHROME = os.getenv(
+    "SIGNIN_PASSWORD_CHROME", "first-testing-change7"
+)
+CHANGE_PASSWORD_CHROME = os.getenv(
+    "CHANGE_PASSWORD_CHROME", "first-testing-change8"
+)
+
+
+SIGNIN_EMAIL_FIREFOX = os.getenv(
+    "SIGNIN_EMAIL_FIREFOX", "first-testingf@gmail.com"
+)
+SIGNIN_PASSWORD_FIREFOX = os.getenv(
+    "SIGNIN_PASSWORD_FIREFOX", "first-testing-change7"
+)
+CHANGE_PASSWORD_FIREFOX = os.getenv(
+    "CHANGE_PASSWORD_FIREFOX", "first-testing-change8"
+)
+
+SIGNIN_EMAIL_WEBKIT = os.getenv(
+    "SIGNIN_EMAIL_WEBKIT", "first-testingw@gmail.com"
+)
+SIGNIN_PASSWORD_WEBKIT = os.getenv(
+    "SIGNIN_PASSWORD_WEBKIT", "first-testing-change7"
+)
+CHANGE_PASSWORD_WEBKIT = os.getenv(
+    "CHANGE_PASSWORD_WEBKIT", "first-testing-change8"
+)
+
+LOGIN_EMAIL = os.getenv("LOGIN_EMAIL", "login-testing@gmail.com")
+LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD", "login-testing")
 
 INCORRECT_PASSWORD = os.getenv("INCORRECT_PASSWORD", "incorrect-password-123")
 
@@ -44,6 +75,9 @@ NEW_USER = {
 }
 
 COMMENT = os.getenv("COMMENT", "This is a test comment")
+NEWPOST = os.getenv("NEWPOST", "This is a new post")
+REPLY = os.getenv("REPLY", "This is a reply")
 
-BROWSERS = ["chromium"]
+
+BROWSERS = ["chromium", "webkit"]
 HEADLESS = False
