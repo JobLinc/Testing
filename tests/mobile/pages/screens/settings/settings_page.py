@@ -1,5 +1,6 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from ...base_page import BasePage
+from .change_password_page import ChangePasswordPage
 
 
 class SettingsPage(BasePage):
@@ -17,6 +18,10 @@ class SettingsPage(BasePage):
     def verify_page_loaded(self, timeout: int = 5) -> None:
         """Ensure the settings page is loaded."""
         self.wait_for_element(self.CHANGE_PASSWORD, timeout)
+
+    def navigate_to_change_password(self) -> ChangePasswordPage:
+        self.click(self.CHANGE_PASSWORD)
+        return ChangePasswordPage(self.driver)
 
     def logout(self):
         """Perform logout action and return the Login page."""

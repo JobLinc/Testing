@@ -41,6 +41,11 @@ exclude =  '''
 [tool.mypy]
 strict = false
 
+[tool.pytest.ini_options]
+markers = [
+    "auth(user: str, register: bool): Custom marker for tests requiring custom auth user"
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

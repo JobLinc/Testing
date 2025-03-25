@@ -1,12 +1,16 @@
 import os
+import string
+import random
 import pytest
 import logging
+
 from appium import webdriver
 
+from .helper import User
 from .adb_utils import start_emulator
 from .pages.screens.home_page import HomePage
 from .pages.screens.auth.landing_page import LandingPage
-from .config import capabilities_options, APPIUM_SERVER_URL, USER
+from .config import capabilities_options, APPIUM_SERVER_URL
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +19,72 @@ logger = logging.getLogger(__name__)
 def emulator_setup():
     """Ensure emulator is running for all tests"""
     start_emulator()
+
+
+@pytest.fixture(scope="session")
+def old_user():
+    """Fixture for credentials to an old user"""
+    first_name = os.getenv("FIRST_NAME", "first")
+    last_name = os.getenv("LAST_NAME", "last")
+    email = os.getenv("EMAIL", "user100@email.com")
+    password = os.getenv("PASSWORD", "user101")
+
+    return User(
+        first_name,
+        last_name,
+        email,
+        password,
+        "Egypt",
+        "6th of October",
+    )
+
+
+@pytest.fixture(scope="module")
+def new_user():
+    """Fixture for credentials for a new user."""
+    email = (
+        "".join(random.choice(string.ascii_letters) for _ in range(10))
+        + "@email.com"
+    )
+
+    return User(
+        "test_firstname",
+        "test_lastname",
+        email,
+        "password",
+        "Egypt",
+        "6th of October",
+    )
+
+
+@pytest.fixture(scope="module")
+def new_password():
+    """Shared new password for tests."""
+    return "new_password123"
+
+
+@pytest.fixture
+def updated_user(new_user, new_password):
+    """Returns new_user with an updated password."""
+    return User(
+        new_user.first_name,
+        new_user.last_name,
+        new_user.email,
+        new_password,
+        new_user.country,
+        new_user.city,
+    )
+
+
+@pytest.fixture
+def auth_params(request, old_user):
+    """Dynamically get auth parameters from test markers."""
+    auth_marker = request.node.get_closest_marker("auth")
+    if auth_marker:
+        user = auth_marker.kwargs.get("user", old_user)
+        register = auth_marker.kwargs.get("register", False)
+        return {"user": request.getfixturevalue(user), "register": register}
+    return {"user": old_user, "register": False}
 
 
 @pytest.fixture
@@ -35,32 +105,33 @@ def app_driver():
 
 
 @pytest.fixture
+def authenticated_driver(app_driver, auth_params):
+    """Authenticated driver using specified user and action (register/login)."""
+    user = auth_params["user"]
+    register = auth_params.get("register", False)
+    landing_page = LandingPage(app_driver)
+    if register:
+        register_page = landing_page.go_to_register()
+        register_page.register(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            email=user.email,
+            password=user.password,
+            country=user.country,
+            city=user.city,
+        )
+    else:
+        login_page = landing_page.go_to_login()
+        login_page.login(user.email, user.password)
+    return app_driver
+
+
+@pytest.fixture
 def landing_page(app_driver):
     """Landing page fixture for non-authenticated tests"""
     page = LandingPage(app_driver)
     page.verify_page_loaded()
     return page
-
-
-@pytest.fixture
-def logged_in_driver(app_driver):
-    """Authenticated driver fixture"""
-    logger.info("Performing login workflow")
-    LandingPage(app_driver).go_to_login().login(USER["email"], USER["password"])
-    return app_driver
-
-
-@pytest.fixture
-def home_page(logged_in_driver):
-    """Pre-authenticated home page"""
-    page = HomePage(logged_in_driver)
-    return page
-
-
-@pytest.fixture
-def settings_page(home_page):
-    """Settings page accessed via sidebar"""
-    return home_page.sidebar.navigate_to_settings()
 
 
 @pytest.fixture
@@ -75,21 +146,14 @@ def login_page(landing_page):
     return landing_page.go_to_login()
 
 
-def pytest_exception_interact(node, call, report):
-    """Take screenshot on test failure"""
-    driver = None
-    for fixture in node.fixturenames:
-        if "driver" in fixture:
-            driver = node.funcargs.get(fixture)
-            break
+@pytest.fixture
+def home_page(authenticated_driver):
+    """Pre-authenticated home page"""
+    page = HomePage(authenticated_driver)
+    return page
 
-    if driver and report.failed:
-        screenshot_name = os.path.join(
-            "reports", "screenshots", f"FAIL_{node.name}.png"
-        )
 
-        try:
-            driver.save_screenshot(screenshot_name)
-            logger.info(f"Screenshot saved: {screenshot_name}")
-        except Exception as e:
-            logger.error(f"Failed to capture screenshot: {str(e)}")
+@pytest.fixture
+def settings_page(home_page):
+    """Settings page accessed via sidebar"""
+    return home_page.sidebar.navigate_to_settings()
