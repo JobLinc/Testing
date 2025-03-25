@@ -43,5 +43,7 @@ NEW_USER = {
     "city": "6th of October",
 }
 
+COMMENT = os.getenv("COMMENT", "This is a test comment")
+
 BROWSERS = ["chromium"]
 HEADLESS = False
