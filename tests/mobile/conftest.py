@@ -89,7 +89,7 @@ def auth_params(request, old_user):
 
 @pytest.fixture
 def app_driver():
-    """Session-scoped Appium driver"""
+    """Appium driver"""
     driver = None
     try:
         logger.info("Initializing Appium driver")

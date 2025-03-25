@@ -34,6 +34,11 @@ class LoginPage(BasePage):
         'new UiSelector().description("Please enter your password")',
     )
 
+    FORGOT_PASSWORD_BUTTON = (
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        'new UiSelector().description("Forgot Password?")',
+    )
+
     SUCCESS_TOAST_TEXT = "login success"
     FAILURE_TOAST_TEXT = "wrewrw Exception: Incorrect credentials"
 
@@ -52,6 +57,12 @@ class LoginPage(BasePage):
     def enter_password(self, password: str) -> Self:
         self.enter_text(self.PASSWORD_INPUT, password)
         return self
+
+    def navigate_to_forgot_password_page(self):
+        from ..auth.forgot_password_page import ForgotPasswordPage
+
+        self.click(self.FORGOT_PASSWORD_BUTTON)
+        return ForgotPasswordPage(self.driver)
 
     def login(self, email: str, password: str) -> HomePage:
         """Performs login action."""
