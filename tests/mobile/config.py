@@ -15,10 +15,7 @@ CAPABILITIES = {
     "appWaitActivity": os.getenv(
         "MAIN_APP_ACTIVITY", "com.example.joblinc.MainActivity"
     ),
-    "noReset": True,
 }
 
-EMAIL = os.getenv("EMAIL", "email")
-PASSWORD = os.getenv("PASSWORD", "password")
 
 capabilities_options = UiAutomator2Options().load_capabilities(CAPABILITIES)
