@@ -35,7 +35,7 @@ def old_user():
         email,
         password,
         "Egypt",
-        "6th of October",
+        "Alexandria",
     )
 
 
@@ -53,7 +53,7 @@ def new_user():
         email,
         "password",
         "Egypt",
-        "6th of October",
+        "Alexandria",
     )
 
 
@@ -87,7 +87,7 @@ def auth_params(request, old_user):
     return {"user": old_user, "register": False}
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def app_driver():
     """Appium driver"""
     driver = None
@@ -96,12 +96,22 @@ def app_driver():
         driver = webdriver.Remote(
             command_executor=APPIUM_SERVER_URL, options=capabilities_options
         )
-        driver.implicitly_wait(5)
         yield driver
     finally:
         if driver:
             logger.info("Tearing down Appium driver")
             driver.quit()
+
+
+@pytest.fixture(autouse=True)
+def reset_to_landing_page(app_driver):
+    """Reset to landing page before each test"""
+    app_driver.terminate_app("com.example.joblinc")
+    app_driver.execute_script(
+        "mobile: clearApp", {"appId": "com.example.joblinc"}
+    )
+    app_driver.activate_app("com.example.joblinc")
+    yield
 
 
 @pytest.fixture

@@ -67,6 +67,62 @@ class BasePage(ABC):
         self.driver.hide_keyboard()
         return self
 
+    def choose_dropdown(self, dropdown_location: tuple[str, str], choice: str):
+        """
+        Selects an option from a dropdown menu with scrolling capability.
+
+        Args:
+            dropdown_location: Tuple containing the locator strategy and value to find the dropdown element
+            choice: The text of the option to select from the dropdown
+        """
+        dropdown_element = self.driver.find_element(*dropdown_location)
+        dropdown_element.click()
+
+        try:
+            option_element = self.driver.find_element(
+                AppiumBy.XPATH,
+                f'//android.widget.Button[@content-desc="{choice}"]',
+            )
+            option_element.click()
+            return
+        except:
+            pass
+
+        previous_page_source = ""
+        max_scrolls = 10
+
+        for _ in range(max_scrolls):
+            current_page_source = self.driver.page_source
+
+            try:
+                option_element = self.driver.find_element(
+                    AppiumBy.XPATH,
+                    f'//android.widget.Button[@content-desc="{choice}"]',
+                )
+                option_element.click()
+                return
+            except:
+                if current_page_source == previous_page_source:
+                    break
+
+                screen_size = self.driver.get_window_size()
+                start_x = screen_size["width"] // 2
+                start_y = screen_size["height"] * 2 // 3
+                end_y = screen_size["height"] // 3
+
+                self.driver.swipe(start_x, start_y, start_x, end_y, 500)
+
+                previous_page_source = current_page_source
+
+        try:
+            option_element = self.driver.find_element(
+                AppiumBy.XPATH,
+                f'//android.widget.Button[@content-desc="{choice}"]',
+            )
+            option_element.click()
+        except:
+            raise Exception(f"Could not find option '{choice}' in the dropdown")
+
     def take_screenshot(self, name: str) -> Self:
         """Take screenshot and continue chain"""
         self.driver.save_screenshot(f"{name}.png")
