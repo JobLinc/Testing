@@ -45,7 +45,9 @@ def add_experience(page: Page, EXPERIENCE) -> None:
 
 def edit_experience(page: Page, EXPERIENCE) -> None:
     page.get_by_role("button", name="Edit").nth(1).click()
-    page.get_by_role("button", name="Edit").nth(-1).click()
+    page.locator("div").filter(
+        has_text=re.compile(rf"^{re.escape(EXPERIENCE['title'])}.*edit$")
+    ).get_by_role("button").click()
 
     page.locator("input[name='title']").fill(EXPERIENCE["title"] + " edited")
     page.locator('input[name="company"]').fill(
@@ -70,11 +72,13 @@ def edit_experience(page: Page, EXPERIENCE) -> None:
     page.get_by_role("button", name="Save", exact=True).click()
 
 
-def delete_experience(page: Page) -> None:
-    page.locator("button.mt-2:has-text('Show all')").click()
-    page.get_by_role("button", name="Edit").nth(-1).click()
+def delete_experience(page: Page, EXPERIENCE) -> None:
+    page.get_by_role("button", name="Edit").nth(1).click()
+    page.locator("div").filter(
+        has_text=re.compile(rf"^{re.escape(EXPERIENCE['title'])}.*edit$")
+    ).get_by_role("button").click()
 
-    page.get_by_role("button", name="Delete").nth(-1).click()
+    page.get_by_role("button", name="Delete").click()
     page.get_by_role("button", name="Confirm").click()
 
 
@@ -83,3 +87,46 @@ def add_skill(page: Page, SKILL) -> None:
     page.locator("form").get_by_role("textbox").fill(SKILL["name"])
     page.get_by_role("combobox").select_option(str(SKILL["level"]))
     page.get_by_role("button", name="Add", exact=True).click()
+
+
+def componenet_behave_as_expected(
+    page: Page, component_name: str, DATA, is_visible: bool
+) -> bool:
+    if page.get_by_role(
+        "button", name=re.compile(rf"Show all \d+ {component_name}")
+    ).is_visible():
+        page.get_by_role(
+            "button", name=re.compile(rf"Show all \d+ {component_name}")
+        ).click()
+
+        # if is_visible=true do this
+        if is_visible:
+            page.locator(
+                f'div.flex.flex-col:has-text("{DATA["title"]}")'
+            ).first.highlight()
+            return page.locator(
+                f'div.flex.flex-col:has-text("{DATA["title"]}")'
+            ).first.is_visible()
+
+        # if is visible = false do this
+        else:
+            return not page.locator(
+                f'div.flex.flex-col:has-text("{DATA["title"]}")'
+            ).first.is_visible()
+
+    else:
+        # less than 3 experiences
+        # if is visible=true do this
+        if is_visible:
+            page.locator(
+                f'div.flex-col:has(span.font-medium:text("{DATA["title"]}"))'
+            ).highlight()
+            return page.locator(
+                f'div.flex-col:has(span.font-medium:text("{DATA["title"]}"))'
+            ).is_visible()
+
+        # if is visible = false do this
+        else:
+            return not page.locator(
+                f'div.flex-col:has(span.font-medium:text("{DATA["title"]}"))'
+            ).is_visible()

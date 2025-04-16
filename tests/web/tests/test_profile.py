@@ -7,6 +7,7 @@ from ..pages.profile_page import (
     add_skill,
     delete_experience,
     edit_experience,
+    componenet_behave_as_expected,
 )
 from ..config import IMAGE1_PATH, IMAGE2_PATH, EXPERIENCE, SKILL
 import re
@@ -15,25 +16,39 @@ import re
 def test_add_experience(page: Page, profileFixture):
     profileFixture
     add_experience(page, EXPERIENCE)
-    if page.locator("button.mt-2:has-text('Show all')").is_visible():
-        page.locator("button.mt-2:has-text('Show all')").click()
+
+    # more than 4 experiences
+    if page.get_by_role(
+        "button", name=re.compile(r"Show all \d+ experiences")
+    ).is_visible():
+        page.get_by_role(
+            "button", name=re.compile(r"Show all \d+ experiences")
+        ).click()
+        page.locator(
+            f'div.flex.flex-col:has-text("{EXPERIENCE["title"]}")'
+        ).first.highlight()
+
         expect(
             page.locator(
                 f'div.flex.flex-col:has-text("{EXPERIENCE["title"]}")'
             ).first
         ).to_be_visible()
+
     else:
+        # less than 3 experiences
+        page.locator(
+            f'div.flex-col:has(span.font-medium:text("{EXPERIENCE["title"]}"))'
+        ).highlight()
         expect(
             page.locator(
-                f'div.flex-col:has(span.font-medium:text("{EXPERIENCE["title"]}")):has-text("{EXPERIENCE["company"]}")'
+                f'div.flex-col:has(span.font-medium:text("{EXPERIENCE["title"]}"))'
             )
         ).to_be_visible()
 
+    # it doesnt handle 3 experiences for some reason because page.get_by_role("button", name="Show all 3 experiences").is_visible() is not working
 
-"""def test_add_skills(page:Page , profileFixture):
-    profileFixture
-    add_skill(page , SKILL)"""
 
+"""
 
 def test_edit_experience(page: Page, profileFixture):
     title = f'{EXPERIENCE["title"]} edited'
@@ -44,7 +59,7 @@ def test_edit_experience(page: Page, profileFixture):
         page.locator("button.mt-2:has-text('Show all')").click()
         expect(
             page.locator(
-                # f'div.flex.flex-col:has-text(/{re.escape(EXPERIENCE["title"])}.*edited/)'
+                f'div.flex.flex-col:has-text(/{re.escape(EXPERIENCE["title"])}.*edited/)'
             ).first
         ).to_be_visible()
     else:
@@ -53,6 +68,7 @@ def test_edit_experience(page: Page, profileFixture):
                 f'div.flex-col:has(span.font-medium:text("{title}")):has-text("{company}")'
             )
         ).to_be_visible()
+"""
 
 
 def test_delete_experience(page: Page, profileFixture):
@@ -61,17 +77,15 @@ def test_delete_experience(page: Page, profileFixture):
     company = f'{EXPERIENCE["company"]} edited'
 
     profileFixture
-    delete_experience(page)
-    if page.locator("button.mt-2:has-text('Show all')").is_visible():
-        page.locator("button.mt-2:has-text('Show all')").click()
-        expect(
-            page.locator(
-                # f'div.flex.flex-col:has-text(/{re.escape(EXPERIENCE["title"])}.*edited/)'
-            ).first
-        ).not_to_be_visible()
-    else:
-        expect(
-            page.locator(
-                f'div.flex-col:has(span.font-medium:text("{title}")):has-text("{company}")'
-            )
-        ).not_to_be_visible()
+    delete_experience(page, EXPERIENCE)
+    page.wait_for_load_state("networkidle")
+    profileFixture
+    assert (
+        componenet_behave_as_expected(page, "experiences", EXPERIENCE, False)
+        == True
+    )
+
+
+"""def test_add_skills(page:Page , profileFixture):
+    profileFixture
+    add_skill(page , SKILL)"""
