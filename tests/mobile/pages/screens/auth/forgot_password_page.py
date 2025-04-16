@@ -1,4 +1,3 @@
-import time
 from typing import Self
 from appium.webdriver.common.appiumby import AppiumBy
 from ...base_page import BasePage
@@ -38,6 +37,10 @@ class ForgotPasswordPage(BasePage):
         'new UiSelector().className("android.view.View").instance(10)',
     )
 
+
+    PASSWORD_STAGE_IDENTIFIER_TOAST_TEXT = "OTP verified successfully"
+    OTP_STAGE_IDENTIFIER_TOAST_TEXT = "OTP sent to your email"
+    
     # when the @ symbol is not present
     FAILURE_INVALID_EMAIL_TOAST_TEXT = "Invalid email"
 
@@ -61,14 +64,12 @@ class ForgotPasswordPage(BasePage):
         self.wait_for_element(self.EMAIL_STAGE)
         self.enter_text(self.INPUT, email)
         self.click(self.CONTINUE_BUTTON)
-        time.sleep(3)
         return self
 
     def enter_otp(self, otp: str) -> Self:
         self.wait_for_element(self.OTP_STAGE)
         self.enter_text(self.INPUT, otp)
         self.click(self.CONTINUE_BUTTON)
-        time.sleep(3)
         return self
 
     def enter_reset_password(self, new_password: str) -> Self:
@@ -81,7 +82,9 @@ class ForgotPasswordPage(BasePage):
         self, email: str, otp: str, new_password: str
     ) -> LoginPage:
 
-        self.enter_email(email).enter_otp(otp).enter_reset_password(
-            new_password
-        )
+        self.enter_email(email)
+        self.wait_for_toast_to_appear(self.OTP_STAGE_IDENTIFIER_TOAST_TEXT)
+        self.enter_otp(otp)
+        self.wait_for_toast_to_appear(self.PASSWORD_STAGE_IDENTIFIER_TOAST_TEXT)
+        self.enter_reset_password(new_password)
         return LoginPage(self.driver)

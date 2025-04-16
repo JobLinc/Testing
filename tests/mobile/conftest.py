@@ -7,19 +7,11 @@ import logging
 from appium import webdriver
 
 from .helper import User
-from .adb_utils import start_emulator
 from .pages.screens.home_page import HomePage
 from .pages.screens.auth.landing_page import LandingPage
 from .config import capabilities_options, APPIUM_SERVER_URL
 
 logger = logging.getLogger(__name__)
-
-
-@pytest.fixture(scope="session", autouse=True)
-def emulator_setup():
-    """Ensure emulator is running for all tests"""
-    start_emulator()
-
 
 @pytest.fixture(scope="session")
 def old_user():

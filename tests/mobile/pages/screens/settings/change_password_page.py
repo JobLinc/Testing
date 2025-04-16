@@ -27,7 +27,9 @@ class ChangePasswordPage(BasePage):
     FAILURE_TOAST_OLD_NEW_SAME_TEXT = (
         "Old password and new password cannot be the same"
     )
-    FAILURE_TOAST_NEW_DONT_MATCH_TEXT = "New passwords do not match"
+    
+    NEW_DONT_MATCH_TEXT = (AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("Passwords do not match")')
+
     FAILURE_TOAST_INCORRECT_OLD_TEXT = "Unauthorized request"
 
     def verify_page_loaded(self, timeout: int = 5) -> None:

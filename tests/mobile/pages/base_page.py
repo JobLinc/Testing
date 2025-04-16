@@ -64,7 +64,7 @@ class BasePage(ABC):
         element.click()
         element.clear()
         element.send_keys(text)
-        self.driver.hide_keyboard()
+        # self.driver.hide_keyboard()
         return self
 
     def choose_dropdown(self, dropdown_location: tuple[str, str], choice: str):

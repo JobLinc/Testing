@@ -35,8 +35,8 @@ def test_change_password_wrong_confirm_new(
     password_page.change_password(
         old_user.password, new_password, new_password[:-1]
     )
-    password_page.wait_for_toast_to_appear(
-        password_page.FAILURE_TOAST_NEW_DONT_MATCH_TEXT
+    password_page.wait_for_element(
+        password_page.NEW_DONT_MATCH_TEXT
     )
 
 
