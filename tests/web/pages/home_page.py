@@ -25,3 +25,10 @@ class HomePage(BasePage):
     def goToProfile(self, signin_email, signin_password) -> None:
         self.first_page.login(signin_email, signin_password)
         self.profile_btn.click()
+
+    def write_new_post(self, POST):
+        # page.get_by_role("textbox", name="Write a new post...").click()
+        self.page.get_by_role("textbox", name="Write a new post...").fill(
+            f"{POST}"
+        )
+        self.page.get_by_role("button", name="send", exact=True).click()

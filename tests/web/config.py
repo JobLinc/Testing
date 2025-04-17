@@ -81,6 +81,8 @@ NEW_USER = {
     "password": "password",
     "country": "Egypt",
     "city": "6th of October",
+    "headline": "Software Engineer",
+    "phone": "1234567890",
 }
 EXPERIENCE = {
     "title": "Software Engineer",
@@ -95,9 +97,16 @@ SKILL = {
     "name": "Python",
     "level": 3,
 }
-
+CERTIFICATE = {
+    "name": "Certificate Name",
+    "organization": "Organization Name",
+    "start_month": 1,
+    "start_year": 2020,
+    "end_month": 9,
+    "end_year": 2023,
+}
 COMMENT = os.getenv("COMMENT", "This is a test comment")
-NEWPOST = os.getenv("NEWPOST", "This is a new post")
+NEWPOST = os.getenv("NEWPOST", "I am testing the posts section")
 REPLY = os.getenv("REPLY", "This is a reply")
 
 
