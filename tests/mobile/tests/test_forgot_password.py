@@ -57,9 +57,7 @@ def test_forgot_password_empty_new_password(
     login_page: LoginPage, old_user: User
 ) -> None:
     forgot_password_page = login_page.navigate_to_forgot_password_page()
-    forgot_password_page.enter_email(old_user.email)
-    forgot_password_page.enter_otp("123456")
-    forgot_password_page.enter_reset_password("")
+    forgot_password_page.reset_password(old_user.email, "123456", "")
     forgot_password_page.wait_for_toast_to_appear(
         forgot_password_page.FAILURE_NEW_PASSWORD_REQUIRED_TOAST_TEXT
     )

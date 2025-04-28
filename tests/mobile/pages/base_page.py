@@ -75,7 +75,7 @@ class BasePage(ABC):
             dropdown_location: Tuple containing the locator strategy and value to find the dropdown element
             choice: The text of the option to select from the dropdown
         """
-        dropdown_element = self.driver.find_element(*dropdown_location)
+        dropdown_element = self.wait_for_element(dropdown_location)
         dropdown_element.click()
 
         try:

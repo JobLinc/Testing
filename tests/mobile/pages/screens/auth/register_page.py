@@ -108,8 +108,10 @@ class RegisterPage(BasePage):
         """Fills in country, city, and optional phone number, then submits the form."""
         if country:
             self.choose_dropdown(self.COUNTRY_CHOICE, country)
+
         if city:
             self.choose_dropdown(self.CITY_CHOICE, city)
+
         if phone_number:
             self.enter_text(self.PHONE_NUMBER_INPUT, phone_number)
         return self.click(self.SUBMIT_BUTTON)

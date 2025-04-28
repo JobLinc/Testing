@@ -27,7 +27,7 @@ capabilities_options = UiAutomator2Options().load_capabilities(CAPABILITIES)
   "platformName": "Android",
   "appium:deviceName": "emulator-5554",
   "appium:automationName": "UiAutomator2",
-  "appium:app": "C:/Users/moalkhateeb/Desktop/Testing/Cross-Platform/build/app/outputs/flutter-apk/app-x86_64-debug.apk",
+  "appium:app": "/Users/Mo/Documents/computing/projects/Testing/Cross-Platform/build/app/outputs/apk/debug/app-x86_64-debug.apk",
   "appium:appWaitActivity": "com.example.joblinc.MainActivity"
 }
 """
