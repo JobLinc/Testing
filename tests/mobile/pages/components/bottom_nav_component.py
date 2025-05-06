@@ -1,5 +1,7 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from ..base_page import BasePage
+from ..screens.jobs_page import JobsPage
+
 from ..screens.my_network_page import MyNetworkPage
 
 
@@ -8,29 +10,29 @@ class BottomNavComponent(BasePage):
 
     BOTTOM_NAV = (
         AppiumBy.XPATH,
-        '//android.view.View[@content-desc="core_bottombar_container"]/android.view.View',
+        '//android.view.View[@content-desc="core_bottombar_container"]',
     )
 
     HOME_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Home\nTab 1 of 5")',
+        'new UiSelector().description("Home")',
     )
 
     MY_NETWORK_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("My Network\nTab 2 of 5")',
+        'new UiSelector().description("Network")',
     )
     POST_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Post\nTab 3 of 5")',
+        'new UiSelector().description("Post")',
     )
     NOTIFICATION_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Notifications\nTab 4 of 5")',
+        'new UiSelector().description("Alerts")',
     )
     JOBS_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Jobs\nTab 5 of 5")',
+        'new UiSelector().description("Jobs")',
     )
 
     def verify_page_loaded(self, timeout: int = 10) -> None:
@@ -52,3 +54,5 @@ class BottomNavComponent(BasePage):
 
     def navigate_to_jobs(self):
         self.click(self.JOBS_BUTTON)
+        return JobsPage(self.driver)
+

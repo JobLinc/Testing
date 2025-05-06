@@ -23,20 +23,8 @@ class ForgotPasswordPage(BasePage):
         'new UiSelector().description("Continue")',
     )
 
-    EMAIL_STAGE = (
-        AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().className("android.view.View").instance(8)',
-    )
-
-    OTP_STAGE = (
-        AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().className("android.view.View").instance(9)',
-    )
-
-    RESET_PASSWORD_STAGE = (
-        AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().className("android.view.View").instance(10)',
-    )
+    PASSWORD_STAGE_IDENTIFIER_TOAST_TEXT = "OTP verified successfully"
+    OTP_STAGE_IDENTIFIER_TOAST_TEXT = "OTP sent to your email"
 
     # when the @ symbol is not present
     FAILURE_INVALID_EMAIL_TOAST_TEXT = "Invalid email"
@@ -55,24 +43,20 @@ class ForgotPasswordPage(BasePage):
 
     def verify_page_loaded(self, timeout=15) -> None:
         self.wait_for_element(self.HEADING, timeout)
-        self.wait_for_element(self.EMAIL_STAGE, timeout)
 
     def enter_email(self, email: str) -> Self:
-        self.wait_for_element(self.EMAIL_STAGE)
         self.enter_text(self.INPUT, email)
         self.click(self.CONTINUE_BUTTON)
-        time.sleep(3)
         return self
 
     def enter_otp(self, otp: str) -> Self:
-        self.wait_for_element(self.OTP_STAGE)
+        self.wait_for_toast_to_appear(self.OTP_STAGE_IDENTIFIER_TOAST_TEXT)
         self.enter_text(self.INPUT, otp)
         self.click(self.CONTINUE_BUTTON)
-        time.sleep(3)
         return self
 
     def enter_reset_password(self, new_password: str) -> Self:
-        self.wait_for_element(self.RESET_PASSWORD_STAGE)
+        self.wait_for_toast_to_appear(self.PASSWORD_STAGE_IDENTIFIER_TOAST_TEXT)
         self.enter_text(self.INPUT, new_password)
         self.click(self.CONTINUE_BUTTON)
         return self
@@ -81,7 +65,7 @@ class ForgotPasswordPage(BasePage):
         self, email: str, otp: str, new_password: str
     ) -> LoginPage:
 
-        self.enter_email(email).enter_otp(otp).enter_reset_password(
-            new_password
-        )
+        self.enter_email(email)
+        self.enter_otp(otp)
+        self.enter_reset_password(new_password)
         return LoginPage(self.driver)

@@ -5,9 +5,9 @@ from appium.webdriver.common.appiumby import AppiumBy
 class MyNetworkPage(BasePage):
     """My network page containing components"""
 
-    MY_NETWORK_HEADING = (
+    RECEIVED_HEADING = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Invitations")',
+        'new UiSelector().description("Received\nTab 1 of 2")',
     )
 
     INVITATION_LIST = (
@@ -17,7 +17,7 @@ class MyNetworkPage(BasePage):
 
     INVITATION_ITEM = (
         AppiumBy.XPATH,
-        '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View/*',
+        '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[3]/android.view.View/android.view.View/android.view.View/android.view.View/*',
     )
 
     REMOVE_BUTTON = (
@@ -35,7 +35,7 @@ class MyNetworkPage(BasePage):
 
     def verify_page_loaded(self, timeout: int = 5) -> None:
         """Ensure the network page is loaded."""
-        self.wait_for_element(self.MY_NETWORK_HEADING)
+        self.wait_for_element(self.RECEIVED_HEADING)
 
     def get_invitations(self) -> list[dict]:
         invitation_elements = self.driver.find_elements(*self.INVITATION_ITEM)

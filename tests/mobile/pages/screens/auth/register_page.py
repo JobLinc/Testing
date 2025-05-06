@@ -23,17 +23,19 @@ class RegisterPage(BasePage):
         AppiumBy.XPATH,
         '//android.view.View[@content-desc="Step 2 of 3"]/android.widget.EditText[2]',
     )
-    COUNTRY_INPUT = (
+    COUNTRY_CHOICE = (
         AppiumBy.XPATH,
-        '//android.view.View[@content-desc="Step 3 of 3"]/android.widget.EditText[1]',
+        "//android.widget.Button[@content-desc='Country\nEgypt']",
     )
-    CITY_INPUT = (
+
+    CITY_CHOICE = (
         AppiumBy.XPATH,
-        '//android.view.View[@content-desc="Step 3 of 3"]/android.widget.EditText[2]',
+        "//android.widget.Button[@content-desc='City']",
     )
+
     PHONE_NUMBER_INPUT = (
         AppiumBy.XPATH,
-        '//android.view.View[@content-desc="Step 3 of 3"]/android.widget.EditText[3]',
+        "//android.widget.EditText[@hint='Phone Number (Optional)']",
     )
 
     # Buttons
@@ -63,18 +65,22 @@ class RegisterPage(BasePage):
         AppiumBy.ANDROID_UIAUTOMATOR,
         'new UiSelector().description("Please enter your password")',
     )
-    EMPTY_COUNTRY_TEXT = (
-        AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Please enter your country")',
-    )
+
     EMPTY_CITY_TEXT = (
         AppiumBy.ANDROID_UIAUTOMATOR,
-        'new UiSelector().description("Please enter your city")',
+        'new UiSelector().description("Please select your city")',
     )
 
+    OTP_INPUT = (
+        AppiumBy.ANDROID_UIAUTOMATOR,
+        'new UiSelector().className("android.widget.EditText")',
+    )
+
+    OTP_BUTTON = (AppiumBy.ACCESSIBILITY_ID, "Verify Code")
+
     # Toast messages
-    SUCCESS_TOAST = "Signup success"
-    ERROR_TOAST = "Exception: Email already exists"
+    SUCCESS_TOAST = "Registration Successful"
+    ERROR_TOAST = "Email already exists"
 
     def verify_page_loaded(self, timeout: int = 15) -> None:
         """Ensures the register screen is loaded by checking the first name input field."""
@@ -100,12 +106,19 @@ class RegisterPage(BasePage):
         self, country: str, city: str, phone_number: str = ""
     ):
         """Fills in country, city, and optional phone number, then submits the form."""
-        self.enter_text(self.COUNTRY_INPUT, country).enter_text(
-            self.CITY_INPUT, city
-        )
+        if country:
+            self.choose_dropdown(self.COUNTRY_CHOICE, country)
+
+        if city:
+            self.choose_dropdown(self.CITY_CHOICE, city)
+
         if phone_number:
             self.enter_text(self.PHONE_NUMBER_INPUT, phone_number)
         return self.click(self.SUBMIT_BUTTON)
+
+    def enter_otp(self) -> None:
+        self.enter_text(self.OTP_INPUT, "123456")
+        self.click(self.OTP_BUTTON)
 
     def register(
         self,
@@ -121,5 +134,7 @@ class RegisterPage(BasePage):
         self.enter_first_last_name(first_name, last_name).enter_email_password(
             email, password
         ).enter_country_city_phone(country, city, phone_number)
+
+        self.enter_otp()
 
         return HomePage(self.driver)

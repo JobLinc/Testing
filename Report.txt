@@ -1,0 +1,9 @@
+- Hint text in comment section appears after clicking the text input
+- Hint text in user profile is too dark looks like actual textThe city in the edit profile appeared as "City" instead of the actual city.
+- Can enter certificate in the future
+- Need to click on add section to add anything to any of the sections already added
+- Entering certificate with issue data after expiry date results in big error
+- Firstname got unset on save in the edit intro section (personal information) section.
+- You can literally create an empty account with no first name, last name, country, city and headline
+- You can upload wrong format for the profile picture if the extension is correct
+- You can upload 1x1 image as cover

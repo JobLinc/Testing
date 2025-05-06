@@ -36,7 +36,7 @@ class SidebarComponent(BasePage):
         'new UiSelector().description("Settings")',
     )
 
-    def verify_page_loaded(self, timeout: int = 10) -> None:
+    def verify_page_loaded(self, timeout: int = 30) -> None:
         """Ensures the sidebar is loaded by checking for a key element."""
         self.wait_for_element(self.PROFILE_BUTTON, timeout)
 

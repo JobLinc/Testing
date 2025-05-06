@@ -55,15 +55,6 @@ def test_register_empty_password(
     register_page.wait_for_element(register_page.EMPTY_PASSWORD_TEXT)
 
 
-def test_register_empty_country(
-    register_page: RegisterPage, old_user: User
-) -> None:
-    register_page.enter_first_last_name(old_user.first_name, old_user.last_name)
-    register_page.enter_email_password(old_user.email, old_user.password)
-    register_page.enter_country_city_phone("", old_user.city)
-    register_page.wait_for_element(register_page.EMPTY_COUNTRY_TEXT)
-
-
 def test_register_empty_city(
     register_page: RegisterPage, old_user: User
 ) -> None:
