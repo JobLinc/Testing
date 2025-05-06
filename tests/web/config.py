@@ -48,8 +48,8 @@ CHANGE_PASSWORD_WEBKIT = os.getenv(
     "CHANGE_PASSWORD_WEBKIT", "first-testing-change9"
 )
 
-LOGIN_EMAIL = os.getenv("LOGIN_EMAIL", "usernew@email.com")
-LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD", "usernew")
+LOGIN_EMAIL = os.getenv("LOGIN_EMAIL", "last3@email.com")
+LOGIN_PASSWORD = os.getenv("LOGIN_PASSWORD", "last123")
 LOGIN_FNAME = os.getenv("LOGIN_FNAME", "User")
 LOGIN_LNAME = os.getenv("LOGIN_LNAME", "New")
 
@@ -109,6 +109,9 @@ COMMENT = os.getenv("COMMENT", "This is a test comment")
 NEWPOST = os.getenv("NEWPOST", "I am testing the posts section")
 REPLY = os.getenv("REPLY", "This is a reply")
 
+OLDEMAIL = os.getenv("OLDEMAIL", "email4@email.com")
+NEWEMAIL = os.getenv("NEWEMAIL", "email5@email.com")
+WEBEMAIL = os.getenv("WEBEMAIL", "email6@email.com")
 
-BROWSERS = ["webkit"]
+BROWSERS = ["chromium", "webkit"]
 HEADLESS = False

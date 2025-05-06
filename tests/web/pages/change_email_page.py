@@ -1,34 +1,41 @@
-from playwright.sync_api import Page
-from .base_page import BasePage
-from ..pages.login_page import LoginPage
+from playwright.sync_api import Page, expect
+import re
 
 
-class ChangeEmailPage(BasePage):
+def signin_with_email(page: Page, email: str) -> None:
+    page.goto("https://joblinc.me/Signin")
+    page.fill("input[name='email']", email)
+    page.fill("input[name='password']", "last123")
+    signin_button = page.get_by_role("button", name="Sign in")
+    signin_button.click()
 
-    def __init__(
-        self, page: Page, start_page: str = "https://joblinc.me/ChangeEmail"
-    ):
-        super().__init__(page, start_page)
 
-        # no login page
-        # self.first_page = LoginPage(
-        #   page, start_page="https://joblinc.me/Signin"
-        # )
-        self.page
-        self.change_email = page.get_by_role("link", name="Change email")
-        self.old_email_input = page.locator(
-            'input[type="email"][required]'
-        ).nth(0)
-        self.new_password_input = page.locator(
-            'input[type="email"][required]'
-        ).nth(1)
+def confirm_email(page: Page) -> None:
+    page.get_by_role("link", name=" Me ").click()
+    page.get_by_role("link", name="Settings & Privacy", exact=True).click()
+    page.get_by_text("Sign in & security").click()
+    page.locator("div").filter(
+        has_text=re.compile(r"^Email addresses$")
+    ).click()
+    page.get_by_role("button", name="Confirm email").click()
+    page.locator(".w-10").first.fill("5")
+    page.locator(".flex > .flex > input:nth-child(2)").fill("4")
+    page.locator("input:nth-child(3)").fill("3")
+    page.locator("input:nth-child(4)").fill("2")
+    page.locator("input:nth-child(5)").fill("1")
+    page.locator("input:nth-child(6)").fill("8")
+    expect(
+        page.get_by_role("heading", name="Wrong OTP entered")
+    ).to_be_visible()
+    page.get_by_test_id("close-button").click()
 
-        self.done_button = page.get_by_role(" button", name="Done")
 
-    def changeEmail(self, old_email: str, new_email: str, loginFixture) -> None:
-        # login first to go to the main page
-        self.page = loginFixture
-        # click the change email buttin in the main page
-        self.change_email.click()
-
-        # use the change email fixture to change email and yield the page
+def change_email(page: Page, new_email: str):
+    page.get_by_role("button", name="Update email").click()
+    page.get_by_role("textbox", name="Email *").click()
+    page.get_by_role("textbox", name="Email *").fill(new_email)
+    page.get_by_role("button", name="Update Email").click()
+    expect(
+        page.get_by_role("heading", name="Email updated successfully!")
+    ).to_be_visible()
+    page.get_by_role("button", name="Continue").click()

@@ -26,8 +26,8 @@ def page(request: FixtureRequest) -> Generator[Page, None, None]:
 def loginFixture(page: Page) -> Page:
     # Perform login steps here
     page.goto("https://joblinc.me/Signin")
-    page.fill("input[name='email']", f"{LOGIN_EMAIL}")
-    page.fill("input[name='password']", f"{LOGIN_PASSWORD}")
+    page.fill("input[name='email']", "test@email.com")
+    page.fill("input[name='password']", "last123")
     signin_button = page.get_by_role("button", name="Sign in")
     signin_button.click()
     print("Login successful")
@@ -41,6 +41,7 @@ def profileFixture(page: Page, loginFixture) -> Page:
     page = loginFixture
     profile_btn = page.get_by_role("link", name=" Me ")
     profile_btn.click()
+    page.get_by_role("button", name="View Profile").click()
     return page
 
 
