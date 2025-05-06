@@ -12,7 +12,7 @@ class MyNetworkPage(BasePage):
 
     INVITATION_LIST = (
         AppiumBy.XPATH,
-        '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[3]/android.view.View/android.view.View/android.view.View/android.view.View',
+        '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[2]/android.view.View',
     )
 
     INVITATION_ITEM = (
@@ -20,8 +20,6 @@ class MyNetworkPage(BasePage):
         '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[3]/android.view.View/android.view.View/android.view.View/android.view.View/*',
     )
 
-
-    # Accept and Remove button with reference to the invitation card not the screen
     REMOVE_BUTTON = (
         AppiumBy.ANDROID_UIAUTOMATOR,
         'new UiSelector().className("android.widget.Button").instance(0)',
@@ -54,7 +52,7 @@ class MyNetworkPage(BasePage):
     def remove_invitation(self, invitation_name: str) -> None:
         """Find and remove a specific invitation by name."""
         invitations = self.get_invitations()
-        
+
         for invitation in invitations:
             if invitation["name"] == invitation_name:
                 invitation_element = invitation["element"]

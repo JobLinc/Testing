@@ -53,6 +53,7 @@ def test_forgot_password_invalid_otp(
     )
 
 
+
 def test_forgot_password_empty_new_password(
     login_page: LoginPage, old_user: User
 ) -> None:

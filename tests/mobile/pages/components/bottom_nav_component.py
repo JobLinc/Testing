@@ -55,3 +55,4 @@ class BottomNavComponent(BasePage):
     def navigate_to_jobs(self):
         self.click(self.JOBS_BUTTON)
         return JobsPage(self.driver)
+

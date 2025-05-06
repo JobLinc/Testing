@@ -1,3 +1,4 @@
+import time
 from typing import Self
 from appium.webdriver.common.appiumby import AppiumBy
 from ...base_page import BasePage

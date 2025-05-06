@@ -25,3 +25,7 @@ class CreatePostPage(BasePage):
 
     def cancel_post(self) -> None:
         self.cancel_button.click()
+
+
+# page.locator("div").filter(has_text="Comment added successfully!").nth(3)
+# page.locator("div").filter(has_text="Reaction added successfully!").nth(3).click()

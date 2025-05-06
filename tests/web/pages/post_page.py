@@ -9,14 +9,13 @@ class PostPage(BasePage):
         super().__init__(page, start_page)
 
         # all likes buttons
-        self.like_button = page.locator(
-            "button:has(p.material-icons:text('thumb_up')) >> text=Like"
+        self.like_button = page.get_by_role("button", name="React").first
+
+        self.comment_button = page.get_by_role("button", name="Comment").first
+        self.comment_input = page.get_by_role(
+            "textbox", name="Write a comment..."
         )
 
-        self.comment_button = page.get_by_role(
-            "button", name="insert_comment Comment"
-        ).first
-        self.comment_input = page.get_by_role("textbox", name="Write a comment")
         # all comments send
         self.comment_send_button = page.get_by_role(
             "button", name="send", exact=True
@@ -26,14 +25,11 @@ class PostPage(BasePage):
             "button", name="Reply"
         ).first
         self.reply_comment_input = page.get_by_role(
-            "textbox", name="Write a reply"
+            "textbox", name="Write a reply..."
         )
-        self.like_reply_comment = like_button = page.locator(
+        self.like_reply_comment = page.locator(
             "button:has-text('Like'), button:has-text('Liked')"
         ).nth(1)
-
-        self.follow_button = page.get_by_text("Follow").first
-        # self.follow_button = page.locator("p.text-red-600.font-medium:text-is('Follow')")
 
         self.post_section = page.locator(
             "div.flex.flex-wrap.w-1\\/1.bg-lightGray.rounded-xl.relative"
@@ -79,7 +75,7 @@ class PostPage(BasePage):
         self.like_reply_comment.click()
 
     def follow_user(self) -> None:
-        self.follow_button.click()
+        pass
 
     def edit_post(self, edit_text: str) -> None:
         self.options_button.click()
