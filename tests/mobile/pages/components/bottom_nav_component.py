@@ -1,5 +1,7 @@
 from appium.webdriver.common.appiumby import AppiumBy
 from ..base_page import BasePage
+from ..screens.jobs_page import JobsPage
+
 from ..screens.my_network_page import MyNetworkPage
 
 
@@ -52,3 +54,4 @@ class BottomNavComponent(BasePage):
 
     def navigate_to_jobs(self):
         self.click(self.JOBS_BUTTON)
+        return JobsPage(self.driver)

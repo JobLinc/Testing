@@ -13,6 +13,7 @@ from .config import capabilities_options, APPIUM_SERVER_URL
 
 logger = logging.getLogger(__name__)
 
+
 @pytest.fixture(scope="session")
 def old_user():
     """Fixture for credentials to an old user"""
@@ -103,6 +104,10 @@ def reset_to_landing_page(app_driver):
         "mobile: clearApp", {"appId": "com.example.joblinc"}
     )
     app_driver.activate_app("com.example.joblinc")
+    os.system(
+        "adb shell pm grant com.example.joblinc android.permission.POST_NOTIFICATIONS"
+    )
+    print("Granting notification permissions")
     yield
 
 

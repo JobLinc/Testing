@@ -40,7 +40,7 @@ class LoginPage(BasePage):
     )
 
     SUCCESS_TOAST_TEXT = "Login successful"
-    FAILURE_TOAST_TEXT = "Incorrect email or password"
+    FAILURE_TOAST_TEXT = "Invalid email or password"
 
     def verify_page_loaded(self, timeout: int = 15) -> None:
         """Ensures the login screen is loaded by waiting for the sign-in button."""
